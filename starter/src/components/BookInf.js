@@ -58,20 +58,23 @@ const BookInf = () => {
         </Row>
         <div className="list-books-content">
           <div
-            className="d-flex"
             style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              margin: "10px 0",
+              margin: "20px 0",
             }}
           >
             <img id="book-image" src={book?.image} alt="Book Cover" />
           </div>
-          <div className="info">
-            <p>
-              <strong>Title: </strong>{" "}
-              <span id="book-title">{book?.title}</span>
+          <h2 style={{ display: "flex", justifyContent: "center" }}>
+            Title:
+            <span id="book-title"> {book?.title}</span>
+          </h2>
+          <div className="description" style={{ margin: "20px 20px" }}>
+            <p id="book-description">
+              <strong> ID: </strong>
+              <span id="book-description">{book?.id}</span>
             </p>
             <p>
               <strong>Author: </strong>
@@ -80,16 +83,6 @@ const BookInf = () => {
             <p>
               <strong>Description: </strong>
               <span id="book-description">{book?.description}</span>
-            </p>
-            <p id="book-description">
-              <strong> id: </strong>{" "}
-              <span id="book-description">{book?.id}</span>
-            </p>
-            <p id="book-description">
-              <strong> Link read book: </strong>
-              <a id="book-previewLink" href={book?.previewLink}>
-                Click Read Books
-              </a>
             </p>
           </div>
         </div>

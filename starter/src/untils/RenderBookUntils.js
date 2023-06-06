@@ -10,7 +10,7 @@ const RenderBooksByShelf = (books, shelf, fetchBooks) => {
     const newShelf = event.target.value;
 
     update(book, newShelf)
-      .then((response) => {
+      .then(() => {
         fetchBooks();
       })
       .catch((error) => {
@@ -31,7 +31,7 @@ const RenderBooksByShelf = (books, shelf, fetchBooks) => {
                   style={{
                     width: 128,
                     height: 193,
-                    backgroundImage: `url("${book?.imageLinks.smallThumbnail}")`,
+                    backgroundImage: `url("${book?.imageLinks?.smallThumbnail}")`,
                   }}
                   onClick={() => {
                     navigate(`/details/${book?.id}`);
@@ -54,7 +54,7 @@ const RenderBooksByShelf = (books, shelf, fetchBooks) => {
                 </div>
               </div>
               <div className="book-title">{book?.title}</div>
-              <div className="book-authors">{book.authors.join(", ")}</div>
+              <div className="book-authors">{book?.authors.join(", ")}</div>
             </div>
           </li>
         ))}

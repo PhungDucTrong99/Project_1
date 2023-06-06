@@ -27,7 +27,7 @@ const SearchBook = () => {
     const newShelf = event.target.value;
 
     update(book, newShelf)
-      .then((response) => {
+      .then(() => {
         fetchBooks();
       })
       .catch((error) => {
@@ -35,7 +35,7 @@ const SearchBook = () => {
       });
   };
   const getDefaultShelf = (book) => {
-    return book.shelf || "none";
+    return book?.shelf || "none";
   };
 
   const handleChange = (e) => {
@@ -83,7 +83,7 @@ const SearchBook = () => {
                         value={getDefaultShelf(book)}
                         onChange={(event) => handleShelfChange(event, book)}
                       >
-                        <option value="move" disabled>
+                        <option value="none" disabled>
                           Move to...
                         </option>
                         {options?.map((option) => (
