@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router";
-import { useState, useEffect } from "react";
-import { search } from "../BooksAPI";
+import { React, useState, useEffect } from "react";
+import { getAll, search, update } from "../BooksAPI";
+import Book from "./Books";
 import options from "../untils/untils";
-import { update } from "../BooksAPI";
 
 const SearchBook = () => {
   const navigate = useNavigate();
@@ -13,7 +13,15 @@ const SearchBook = () => {
     if (searchBooks?.trim() !== "") {
       search(searchBooks)
         .then((data) => {
-          setSearchResults(data);
+          const searchResultsWithShelf = data.map((book) => {
+            const matchingBook = books.find((b) => b.id === book.id);
+            if (matchingBook) {
+              return { ...book, shelf: matchingBook.shelf };
+            } else {
+              return book;
+            }
+          });
+          setSearchResults(searchResultsWithShelf);
         })
         .catch((error) => {
           console.log(error);
@@ -23,27 +31,38 @@ const SearchBook = () => {
     }
   }, [searchBooks]);
 
-  const handleShelfChange = (event, book, fetchBooks) => {
+  const handleShelfChange = (event, book) => {
     const newShelf = event.target.value;
 
     update(book, newShelf)
       .then(() => {
-        fetchBooks();
+        // Handle successful update
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  const getDefaultShelf = (book) => {
-    return book?.shelf || "none";
-  };
 
   const handleChange = (e) => {
     setSearchBooks(e.target.value);
   };
+
   const handleBackPage = () => {
     navigate("/");
   };
+
+  // Get the books from the main page
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    getAll()
+      .then((data) => {
+        setBooks(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <div className="search-books">
@@ -62,43 +81,14 @@ const SearchBook = () => {
       </div>
       <div className="search-books-results">
         <ol className="books-grid">
-          {Array.isArray(searchResults) && searchResults?.length > 0 ? (
+          {searchResults.length > 0 ? (
             searchResults.map((book) => (
-              <li key={book?.id}>
-                <div className="book">
-                  <div className="book-top">
-                    <div
-                      className="book-cover"
-                      style={{
-                        width: 128,
-                        height: 193,
-                        backgroundImage: `url("${book?.imageLinks?.smallThumbnail}")`,
-                      }}
-                      onClick={() => {
-                        navigate(`/details/${book?.id}`);
-                      }}
-                    ></div>
-                    <div className="book-shelf-changer">
-                      <select
-                        value={getDefaultShelf(book)}
-                        onChange={(event) => handleShelfChange(event, book)}
-                      >
-                        <option value="none" disabled>
-                          Move to...
-                        </option>
-                        {options?.map((option) => (
-                          <option key={option?.value} value={option?.value}>
-                            {option?.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="book-title">{book?.title}</div>
-                  <div className="book-authors">
-                    {book?.authors?.join(", ")}
-                  </div>
-                </div>
+              <li key={book.id}>
+                <Book
+                  book={book}
+                  handleShelfChange={handleShelfChange}
+                  options={options}
+                />
               </li>
             ))
           ) : (
@@ -109,4 +99,5 @@ const SearchBook = () => {
     </div>
   );
 };
+
 export default SearchBook;

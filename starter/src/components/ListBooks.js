@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAll } from "../BooksAPI";
 import Header from "./Header";
 import { useNavigate } from "react-router";
-import RenderBooksByShelf from "../untils/RenderBookUntils";
+import Shelf from "./Shelf";
 
 const ListBook = () => {
   const navigate = useNavigate();
@@ -16,26 +16,10 @@ const ListBook = () => {
       console.log(error);
     }
   };
-  // useEffect(() => {
-  //   const fetchBooks = async () => {
-  //     try {
-  //       const booksData = await getAll();
-  //       setBooks(booksData);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   fetchBooks();
-  // }, []);
 
   useEffect(() => {
     fetchBooks();
   }, []);
-
-  // useEffect(() => {
-  //   setBooks(books);
-  // }, [books]);
 
   const handleChangePageSearch = () => {
     navigate("/search");
@@ -47,26 +31,26 @@ const ListBook = () => {
       <div className="list-books">
         <div className="list-books-content">
           <div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Currently Reading</h2>
-              <div className="bookshelf-books">
-                {RenderBooksByShelf(books, "currentlyReading", fetchBooks)}
-              </div>
-            </div>
+            <Shelf
+              books={books}
+              shelfTitle="Currently Reading"
+              shelfType="currentlyReading"
+              fetchBooks={fetchBooks}
+            />
 
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Want to Read</h2>
-              <div className="bookshelf-books">
-                {RenderBooksByShelf(books, "wantToRead", fetchBooks)}
-              </div>
-            </div>
+            <Shelf
+              books={books}
+              shelfTitle="Want to Read"
+              shelfType="wantToRead"
+              fetchBooks={fetchBooks}
+            />
 
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Read</h2>
-              <div className="bookshelf-books">
-                {RenderBooksByShelf(books, "read", fetchBooks)}
-              </div>
-            </div>
+            <Shelf
+              books={books}
+              shelfTitle="Read"
+              shelfType="read"
+              fetchBooks={fetchBooks}
+            />
           </div>
         </div>
       </div>

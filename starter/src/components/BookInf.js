@@ -13,28 +13,34 @@ const BookInf = () => {
     author: "",
     image: "",
   });
+
   const navigate = useNavigate();
-
   const { id } = useParams();
-  const fetchBook = async () => {
-    const getInfBooks = await get(id);
 
-    const dataPush = {
-      id: getInfBooks.id || "",
-      title: getInfBooks.title || "",
-      description: getInfBooks.description || "",
-      author:
-        getInfBooks.authors && getInfBooks.authors.length > 0
-          ? getInfBooks.authors[0]
-          : "",
-      image: getInfBooks.imageLinks.thumbnail || "",
-      previewLink: getInfBooks.previewLink || "",
-    };
-    setBook(dataPush);
-  };
   useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        const getInfBooks = await get(id);
+
+        const dataPush = {
+          id: getInfBooks?.id || "",
+          title: getInfBooks?.title || "",
+          description: getInfBooks?.description || "",
+          author:
+            getInfBooks?.authors && getInfBooks?.authors.length > 0
+              ? getInfBooks?.authors[0]
+              : "",
+          image: getInfBooks?.imageLinks?.thumbnail || "",
+          previewLink: getInfBooks?.previewLink || "",
+        };
+        setBook(dataPush);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchBook();
-  }, []);
+  }, [id]);
 
   const handleBackPage = () => {
     navigate("/");
@@ -90,4 +96,5 @@ const BookInf = () => {
     </div>
   );
 };
+
 export default BookInf;

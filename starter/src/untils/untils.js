@@ -15,15 +15,12 @@ export async function handleSearch(item, setBooks, setListBook) {
       setBooks(searchResults);
       if (Array.isArray(searchResults)) {
         const dataBooks = searchResults
-          .filter((book) => book.imageLinks && book.imageLinks.thumbnail)
+          .filter((book) => book?.imageLinks && book?.imageLinks?.thumbnail)
           .map((book) => ({
-            id: book.id ? book.id : "",
+            id: book?.id ? book.id : "",
             title: book.title ? book.title : "",
-            author:
-              book.authors && book.authors.length > 0
-                ? book.authors.join(", ")
-                : "",
-            image: book.imageLinks.thumbnail,
+            author: book?.authors?.join(", "),
+            image: book?.imageLinks?.thumbnail,
           }));
         setListBook([...dataBooks]);
       } else {
