@@ -62,7 +62,7 @@ const SearchBook = () => {
       </div>
       <div className="search-books-results">
         <ol className="books-grid">
-          {Array.isArray(searchResults) && searchResults.length > 0 ? (
+          {Array.isArray(searchResults) && searchResults?.length > 0 ? (
             searchResults.map((book) => (
               <li key={book?.id}>
                 <div className="book">
@@ -72,7 +72,7 @@ const SearchBook = () => {
                       style={{
                         width: 128,
                         height: 193,
-                        backgroundImage: `url("${book?.imageLinks.smallThumbnail}")`,
+                        backgroundImage: `url("${book?.imageLinks?.smallThumbnail}")`,
                       }}
                       onClick={() => {
                         navigate(`/details/${book?.id}`);
@@ -86,7 +86,7 @@ const SearchBook = () => {
                         <option value="move" disabled>
                           Move to...
                         </option>
-                        {options.map((option) => (
+                        {options?.map((option) => (
                           <option key={option?.value} value={option?.value}>
                             {option?.label}
                           </option>
@@ -95,7 +95,9 @@ const SearchBook = () => {
                     </div>
                   </div>
                   <div className="book-title">{book?.title}</div>
-                  <div className="book-authors">{book?.authors.join(", ")}</div>
+                  <div className="book-authors">
+                    {book?.authors?.join(", ")}
+                  </div>
                 </div>
               </li>
             ))
